@@ -1,0 +1,2 @@
+# RandomWinner
+Random winner.

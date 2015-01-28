@@ -6,6 +6,7 @@
 namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
+use SplMaxHeap;
 
 class Solver
 {
@@ -44,6 +45,27 @@ class Solver
         }
         $this->list[$key] = (int)$chance;
         return true;
+    }
+
+    public function run()
+    {
+        arsort($this->list);
+        $win = null;
+        $random = null;
+        foreach ($this->list as $key => $item) {
+            if ($random === null) {
+                $random = $this->generator->generateInt(1,$item);
+            }
+            if ($item >= $random) {
+                $win = $key;
+            }
+        }
+
+        if (isset($this->objects[$win])) {
+            return $this->objects[$win];
+        }
+
+        return $win;
     }
 
     /**

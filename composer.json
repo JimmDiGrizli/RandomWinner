@@ -1,0 +1,36 @@
+{
+    "name": "getsky/random-winner",
+    "type": "library",
+    "description": "Random winner",
+    "keywords": [
+        "random",
+        "winner"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "JimmDiGrizli",
+            "email": "getmansk-y@yandex.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ircmaxell/random-lib": "1.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.3.*",
+        "squizlabs/php_codesniffer": "1.*",
+        "phpdocumentor/phpdocumentor": "2.*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "GetSky\\RandomWinner\\": "src/"
+        }
+    }
+}

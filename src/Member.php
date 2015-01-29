@@ -5,7 +5,7 @@
  */
 namespace GetSky\RandomWinner;
 
-class Member
+class Member implements MemberInterface
 {
     /**
     * @var mixed

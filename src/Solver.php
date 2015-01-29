@@ -6,22 +6,24 @@
 namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
+use SplObjectStorage;
 
 class Solver
 {
     /**
-     * @var Generator $generator
+     * @var Generator
      */
     protected $generator;
 
     /**
-     * @var array $objects
+     * @var SplObjectStorage
      */
-    protected $objects;
+    protected $members;
+
     /**
-     * @var array $list
+     * @var int
      */
-    protected $list;
+    protected $upperLimit = 0;
 
     /**
      * @param Generator $generator
@@ -29,92 +31,59 @@ class Solver
     public function __construct(Generator $generator)
     {
         $this->generator = $generator;
-    }
-
-    /**
-     * @param $object mixed
-     * @param $chance int
-     * @return bool
-     */
-    public function push($object, $chance)
-    {
-        $key = $this->hashObject($object);
-        if (is_object($object)) {
-            $this->objects[$key] = $object;
-        }
-        $this->list[$key] = (int)$chance;
-        return true;
+        $this->members = new SplObjectStorage();
     }
 
     public function run()
     {
-        arsort($this->list);
-        $win = null;
-        $random = null;
-        foreach ($this->list as $key => $item) {
-            if ($random === null) {
-                $random = $this->generator->generateInt(1, $item);
-            }
-            if ($item >= $random) {
-                $win = $key;
+        $this->createRange();
+        $random = $this->generator->generateInt(1, $this->upperLimit);
+        foreach ($this->members as $member) {
+            $range = $this->members[$member];
+            if ($random >= $range[0]  && $random <= $range[1]) {
+                return $member;
             }
         }
+    }
 
-        if (isset($this->objects[$win])) {
-            return $this->objects[$win];
+    protected function createRange()
+    {
+        $i = 0;
+        foreach ($this->members as $member) {
+            $this->members[$member] = [++$i, $i += $member->getChance() - 1];
         }
-
-        return $win;
     }
 
     /**
-     * @param $object mixed
+     * @param Member $member
+     * @return void
+     */
+    public function attach(Member $member)
+    {
+        if (!$this->contains($member)) {
+            $this->members->attach($member);
+            $this->upperLimit += $member->getChance();
+        }
+    }
+
+    /**
+     * @param $member Member
      * @return bool
      */
-    public function contains($object)
+    public function contains(Member $member)
     {
-        return isset($this->list[$this->hashObject($object)]);
+        return $this->members->contains($member);
     }
 
     /**
-     * @param $object mixed
-     * @return bool|int
+     * @param $member Member
+     * @return void
      */
-    public function chance($object)
+    public function detach(Member $member)
     {
-        if ($this->contains($object) === false) {
-            return false;
+        if ($this->contains($member)) {
+            $this->members->detach($member);
+            $this->upperLimit -= $member->getChance();
         }
-        return $this->list[$this->hashObject($object)];
-    }
-
-    /**
-     * @param $object mixed
-     * @return bool
-     */
-    public function delete($object)
-    {
-        $key = $this->hashObject($object);
-        if ($this->contains($object) === false) {
-            return false;
-        }
-        if (is_object($object)) {
-            unset($this->objects[$key]);
-        }
-        unset($this->list[$key]);
-        return true;
-    }
-
-    /**
-     * @param $object mixed
-     * @return string
-     */
-    protected function hashObject($object)
-    {
-        $hash = null;
-        if (is_object($object)) {
-            $hash = spl_object_hash($object);
-        }
-        return $hash?$hash:$object;
     }
 }

@@ -49,6 +49,16 @@ class SolverTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($win, $solver->run());
     }
+    /**
+     * @expectedException        GetSky\RandomWinner\SolverException
+     */
+    public function testExceptionRun()
+    {
+        $generator = $this->getGenerator(true);
+        $solver = new Solver($generator);
+
+        $this->assertSame(null, $solver->run());
+    }
 
     public function testCreate()
     {
@@ -126,7 +136,7 @@ class SolverTest extends PHPUnit_Framework_TestCase
      */
     protected function getMember($object, $chance)
     {
-         $mock = $this->getMockBuilder('GetSky\RandomWinner\Member')
+         $mock = $this->getMockBuilder('GetSky\RandomWinner\MemberInterface')
             ->setMethods([])
             ->disableOriginalConstructor()
             ->getMock();

@@ -8,4 +8,4 @@ namespace GetSky\RandomWinner;
 interface MemberInterface
 {
     public function getChance();
-} 
+}

@@ -7,6 +7,7 @@ namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
 use SplObjectStorage;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Solver
 {
@@ -34,6 +35,10 @@ class Solver
         $this->members = new SplObjectStorage();
     }
 
+
+    /**
+     * @return mixed|object
+     */
     public function run()
     {
         $this->createRange();
@@ -44,8 +49,14 @@ class Solver
                 return $member;
             }
         }
+
+        throw new SolverException();
     }
 
+    /**
+     * @expectedException        SolverException
+     * @expectedExceptionMessage
+     */
     protected function createRange()
     {
         $i = 0;
@@ -55,10 +66,10 @@ class Solver
     }
 
     /**
-     * @param Member $member
+     * @param MemberInterface $member
      * @return void
      */
-    public function attach(Member $member)
+    public function attach(MemberInterface $member)
     {
         if (!$this->contains($member)) {
             $this->members->attach($member);
@@ -67,19 +78,19 @@ class Solver
     }
 
     /**
-     * @param $member Member
+     * @param $member MemberInterface
      * @return bool
      */
-    public function contains(Member $member)
+    public function contains(MemberInterface $member)
     {
         return $this->members->contains($member);
     }
 
     /**
-     * @param $member Member
+     * @param $member MemberInterface
      * @return void
      */
-    public function detach(Member $member)
+    public function detach(MemberInterface $member)
     {
         if ($this->contains($member)) {
             $this->members->detach($member);

@@ -7,5 +7,8 @@ namespace GetSky\RandomWinner;
 
 interface MemberInterface
 {
+    /**
+     * @return int
+     */
     public function getChance();
 }

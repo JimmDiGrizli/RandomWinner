@@ -7,14 +7,19 @@ namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
 use SplObjectStorage;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Traversable;
 
-class Solver
+class Solver implements MemberStorageInterface
 {
     /**
      * @var Generator
      */
     protected $generator;
+
+    /**
+     * @var MemberStorageInterface
+     */
+    protected $storage;
 
     /**
      * @var SplObjectStorage
@@ -28,23 +33,26 @@ class Solver
 
     /**
      * @param Generator $generator
+     * @param MemberStorageInterface $storage
      */
-    public function __construct(Generator $generator)
+    public function __construct(Generator $generator, MemberStorageInterface $storage = null)
     {
         $this->generator = $generator;
         $this->members = new SplObjectStorage();
+        $this->storage = ($storage) ? $storage : $this;
     }
 
 
     /**
+     * @throws SolverException
      * @return mixed|object
      */
     public function run()
     {
         $this->createRange();
-        $random = $this->generator->generateInt(1, $this->upperLimit);
-        foreach ($this->members as $member) {
-            $range = $this->members[$member];
+        $random = $this->generator->generateInt(1, $this->storage->getUpperLimit());
+        foreach ($this->storage->getAll() as $member) {
+            $range = $this->storage->getRange($member);
             if ($random >= $range[0]  && $random <= $range[1]) {
                 return $member;
             }
@@ -54,7 +62,7 @@ class Solver
     }
 
     /**
-     * @expectedException        SolverException
+     * @expectedException SolverException
      * @expectedExceptionMessage
      */
     protected function createRange()
@@ -96,5 +104,30 @@ class Solver
             $this->members->detach($member);
             $this->upperLimit -= $member->getChance();
         }
+    }
+
+    /**
+     * @param MemberInterface $member
+     * @return mixed|object
+     */
+    public function getRange(MemberInterface $member)
+    {
+        return $this->members->offsetGet($member);
+    }
+
+    /**
+     * @return Traversable
+     */
+    public function getAll()
+    {
+        return $this->members;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUpperLimit()
+    {
+        return $this->upperLimit;
     }
 }

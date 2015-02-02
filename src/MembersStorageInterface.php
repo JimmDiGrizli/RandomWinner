@@ -7,7 +7,7 @@ namespace GetSky\RandomWinner;
 
 use Traversable;
 
-interface MemberStorageInterface
+interface MembersStorageInterface
 {
     /**
      * @param MemberInterface $member

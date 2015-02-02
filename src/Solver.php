@@ -9,7 +9,7 @@ use RandomLib\Generator;
 use SplObjectStorage;
 use Traversable;
 
-class Solver implements MemberStorageInterface
+class Solver implements MembersStorageInterface
 {
     /**
      * @var Generator
@@ -17,7 +17,7 @@ class Solver implements MemberStorageInterface
     protected $generator;
 
     /**
-     * @var MemberStorageInterface
+     * @var MembersStorageInterface
      */
     protected $storage;
 
@@ -33,9 +33,9 @@ class Solver implements MemberStorageInterface
 
     /**
      * @param Generator $generator
-     * @param MemberStorageInterface $storage
+     * @param MembersStorageInterface $storage
      */
-    public function __construct(Generator $generator, MemberStorageInterface $storage = null)
+    public function __construct(Generator $generator, MembersStorageInterface $storage = null)
     {
         $this->generator = $generator;
         $this->members = new SplObjectStorage();

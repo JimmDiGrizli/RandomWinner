@@ -94,15 +94,15 @@ class SolverTest extends PHPUnit_Framework_TestCase
     {
         $win1 = $this->getMember("b", 40);
         $members1 = new SplObjectStorage();
-        $members1->attach($this->getMember("a", 10));
-        $members1->attach($win1);
-        $members1->attach($this->getMember(2, 50));
+        $members1->attach($this->getMember("a", 10), [1,10]);
+        $members1->attach($win1, [11,50]);
+        $members1->attach($this->getMember(2, 50), [51,100]);
 
         $win2 = $this->getMember(new StdClass(), 15);
         $members2 = new SplObjectStorage();
-        $members2->attach($this->getMember("a", 15));
-        $members2->attach($win2);
-        $members2->attach($this->getMember("c", 50));
+        $members2->attach($this->getMember("a", 15), [1,15]);
+        $members2->attach($win2, [16,30]);
+        $members2->attach($this->getMember("c", 50), [31,100]);
 
         return [
             [$members1, 100, $win1],
@@ -146,7 +146,7 @@ class SolverTest extends PHPUnit_Framework_TestCase
             ->method('getObject')
             ->will($this->returnValue($object));
         $mock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('getChance')
             ->will($this->returnValue((int)$chance));
 

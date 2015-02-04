@@ -5,9 +5,9 @@
  */
 namespace GetSky\RandomWinner;
 
+use ArrayAccess;
 use RandomLib\Generator;
 use SplObjectStorage;
-use Traversable;
 
 class Solver implements MembersStorageInterface
 {
@@ -49,11 +49,10 @@ class Solver implements MembersStorageInterface
      */
     public function run()
     {
-        $this->createRange();
         $random = $this->generator->generateInt(1, $this->storage->getUpperLimit());
         foreach ($this->storage->getAll() as $member) {
             $range = $this->storage->getRange($member);
-            if ($random >= $range[0]  && $random <= $range[1]) {
+            if ($random >= $range[0] && $random <= $range[1]) {
                 return $member;
             }
         }
@@ -62,19 +61,18 @@ class Solver implements MembersStorageInterface
     }
 
     /**
-     * @expectedException SolverException
-     * @expectedExceptionMessage
+     * @return void
      */
     protected function createRange()
     {
         $i = 0;
         foreach ($this->members as $member) {
-            $this->members[$member] = [++$i, $i += $member->getChance() - 1];
+            $this->members->offsetSet($member, [++$i, $i += $member->getChance() - 1]);
         }
     }
 
     /**
-     * @param MemberInterface $member
+     * @param MemberInterface $member/
      * @return void
      */
     public function attach(MemberInterface $member)
@@ -82,6 +80,7 @@ class Solver implements MembersStorageInterface
         if (!$this->contains($member)) {
             $this->members->attach($member);
             $this->upperLimit += $member->getChance();
+            $this->createRange();
         }
     }
 
@@ -103,6 +102,7 @@ class Solver implements MembersStorageInterface
         if ($this->contains($member)) {
             $this->members->detach($member);
             $this->upperLimit -= $member->getChance();
+            $this->createRange();
         }
     }
 
@@ -116,7 +116,7 @@ class Solver implements MembersStorageInterface
     }
 
     /**
-     * @return Traversable
+     * @return ArrayAccess
      */
     public function getAll()
     {

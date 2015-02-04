@@ -5,7 +5,6 @@
  */
 namespace GetSky\RandomWinner;
 
-use ArrayAccess;
 use RandomLib\Generator;
 use SplObjectStorage;
 
@@ -38,7 +37,11 @@ class Solver implements MembersStorageInterface
     public function __construct(Generator $generator, MembersStorageInterface $storage = null)
     {
         $this->generator = $generator;
-        $this->members = new SplObjectStorage();
+
+        if($storage == null) {
+            $this->members = new SplObjectStorage();
+        }
+
         $this->storage = ($storage) ? $storage : $this;
     }
 
@@ -72,7 +75,7 @@ class Solver implements MembersStorageInterface
     }
 
     /**
-     * @param MemberInterface $member/
+     * @param MemberInterface $member
      * @return void
      */
     public function attach(MemberInterface $member)
@@ -116,7 +119,7 @@ class Solver implements MembersStorageInterface
     }
 
     /**
-     * @return ArrayAccess
+     * @return \Traversable
      */
     public function getAll()
     {

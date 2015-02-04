@@ -38,7 +38,7 @@ class Solver implements MembersStorageInterface
     {
         $this->generator = $generator;
 
-        if($storage == null) {
+        if ($storage == null) {
             $this->members = new SplObjectStorage();
         }
 

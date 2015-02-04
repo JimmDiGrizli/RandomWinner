@@ -17,15 +17,10 @@ use GetSky\RandomWinner\Solver;
 //Prepare library for generating random numbers and our solver.
 $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
 
-// Create a member objects with a chance to win.
-$festMember = new Member('Foo', 35);
-$secondMember = new Member('Bar', 10);
-$thirdMember = new Member(new StdClass(), 55);
-
-// Attach them to the solver.
-$solver->attach($festMember);
-$solver->attach($secondMember);
-$solver->attach($thirdMember);
+// Create a member objects with a chance to win and attach them to the solver.
+$solver->attach(new Member('Foo', 35));
+$solver->attach(new Member('Bar', 10));
+$solver->attach(new Member(new StdClass(), 55));
 
 // Run solver. You want to run again and again.
 $winner = $solver->run();

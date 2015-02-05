@@ -30,5 +30,38 @@ $winner = $solver->run();
 Member Interface
 ----------------
 
+You can pass as a member any object that implements MemberInterface.
+
+```php
+
+
+include '../vendor/autoload.php';
+
+use GetSky\RandomWinner\MemberInterface;
+use GetSky\RandomWinner\Solver;
+
+Class MyMember implements MemberInterface {
+
+    public $limit;
+
+    public function __construct($limit)
+    {
+        $this->limit = $limit;
+    }
+
+    public function getChance()
+    {
+        return rand(0, $this->limit);
+    }
+}
+
+$solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
+
+$solver->attach(new MyMember(35));
+$solver->attach(new MyMember(25));
+
+$winner = $solver->run();
+
+```
 MembersStorage Interface
 -----------------------

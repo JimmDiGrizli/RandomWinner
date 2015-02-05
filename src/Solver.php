@@ -47,6 +47,7 @@ class Solver implements MembersStorageInterface
 
 
     /**
+     * Generate a winner.
      * @throws SolverException
      * @return mixed|object
      */

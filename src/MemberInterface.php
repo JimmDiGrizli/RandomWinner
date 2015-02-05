@@ -5,6 +5,9 @@
  */
 namespace GetSky\RandomWinner;
 
+/**
+ * Interface for implementing member.
+ */
 interface MemberInterface
 {
     /**

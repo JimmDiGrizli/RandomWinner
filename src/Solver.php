@@ -6,9 +6,8 @@
 namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
-use SplObjectStorage;
 
-class Solver implements MembersStorageInterface
+class Solver
 {
     /**
      * @var Generator
@@ -21,11 +20,6 @@ class Solver implements MembersStorageInterface
     protected $storage;
 
     /**
-     * @var SplObjectStorage
-     */
-    protected $members;
-
-    /**
      * @var int
      */
     protected $upperLimit = 0;
@@ -34,17 +28,11 @@ class Solver implements MembersStorageInterface
      * @param Generator $generator
      * @param MembersStorageInterface $storage
      */
-    public function __construct(Generator $generator, MembersStorageInterface $storage = null)
+    public function __construct(Generator $generator, MembersStorageInterface $storage)
     {
         $this->generator = $generator;
-
-        if ($storage == null) {
-            $this->members = new SplObjectStorage();
-        }
-
-        $this->storage = ($storage) ? $storage : $this;
+        $this->storage = $storage;
     }
-
 
     /**
      * Generate a winner.
@@ -62,76 +50,5 @@ class Solver implements MembersStorageInterface
         }
 
         throw new SolverException();
-    }
-
-    /**
-     * @return void
-     */
-    protected function createRange()
-    {
-        $i = 0;
-        foreach ($this->members as $member) {
-            $this->members->offsetSet($member, [++$i, $i += $member->getChance() - 1]);
-        }
-    }
-
-    /**
-     * @param MemberInterface $member
-     * @return void
-     */
-    public function attach(MemberInterface $member)
-    {
-        if (!$this->contains($member)) {
-            $this->members->attach($member);
-            $this->upperLimit += $member->getChance();
-            $this->createRange();
-        }
-    }
-
-    /**
-     * @param $member MemberInterface
-     * @return bool
-     */
-    public function contains(MemberInterface $member)
-    {
-        return $this->members->contains($member);
-    }
-
-    /**
-     * @param $member MemberInterface
-     * @return void
-     */
-    public function detach(MemberInterface $member)
-    {
-        if ($this->contains($member)) {
-            $this->members->detach($member);
-            $this->upperLimit -= $member->getChance();
-            $this->createRange();
-        }
-    }
-
-    /**
-     * @param MemberInterface $member
-     * @return mixed|object
-     */
-    public function getRange(MemberInterface $member)
-    {
-        return $this->members->offsetGet($member);
-    }
-
-    /**
-     * @return \Traversable
-     */
-    public function getAll()
-    {
-        return $this->members;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUpperLimit()
-    {
-        return $this->upperLimit;
     }
 }

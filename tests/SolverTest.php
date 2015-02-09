@@ -12,20 +12,21 @@ class SolverTest extends PHPUnit_Framework_TestCase
     public function testPush($object, $chance)
     {
         $generator = $this->getGenerator();
-        $solver = new Solver($generator);
+        $storage = new \GetSky\RandomWinner\SplStorage();
+        $solver = new Solver($generator, $storage);
         $member = $this->getMember($object, $chance);
 
-        $upperLimit = new ReflectionProperty('GetSky\RandomWinner\Solver', 'upperLimit');
+        $upperLimit = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'upperLimit');
         $upperLimit->setAccessible(true);
 
 
-        $solver->attach($member);
-        $this->assertSame(true, $solver->contains($member));
-        $this->assertSame((int)$chance, $upperLimit->getValue($solver));
+        $storage->attach($member);
+        $this->assertSame(true, $storage->contains($member));
+        $this->assertSame((int)$chance, $upperLimit->getValue($storage));
 
-        $solver->detach($member);
-        $this->assertSame(false, $solver->contains($member));
-        $this->assertSame(0, $upperLimit->getValue($solver));
+        $storage->detach($member);
+        $this->assertSame(false, $storage->contains($member));
+        $this->assertSame(0, $upperLimit->getValue($storage));
     }
 
     /**
@@ -37,15 +38,16 @@ class SolverTest extends PHPUnit_Framework_TestCase
     public function testRun($members, $upperLimit, $win)
     {
         $generator = $this->getGenerator(true);
-        $solver = new Solver($generator);
+        $storage = new \GetSky\RandomWinner\SplStorage();
+        $solver = new Solver($generator, $storage);
 
-        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\Solver', 'members');
+        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
         $aGenerator->setAccessible(true);
-        $aGenerator->setValue($solver, $members);
+        $aGenerator->setValue($storage, $members);
 
-        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\Solver', 'upperLimit');
+        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'upperLimit');
         $aGenerator->setAccessible(true);
-        $aGenerator->setValue($solver, $upperLimit);
+        $aGenerator->setValue($storage, $upperLimit);
 
         $this->assertSame($win, $solver->run());
     }
@@ -55,7 +57,9 @@ class SolverTest extends PHPUnit_Framework_TestCase
     public function testExceptionRun()
     {
         $generator = $this->getGenerator(true);
-        $solver = new Solver($generator);
+        $storage = new \GetSky\RandomWinner\SplStorage();
+        $solver = new Solver($generator, $storage);
+
 
         $this->assertSame(null, $solver->run());
     }
@@ -68,24 +72,25 @@ class SolverTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $solver = new Solver($generator);
+        $storage = new \GetSky\RandomWinner\SplStorage();
+        $solver = new Solver($generator, $storage);
 
         $aGenerator = new ReflectionProperty('GetSky\RandomWinner\Solver', 'generator');
         $aGenerator->setAccessible(true);
-        $aMembers = new ReflectionProperty('GetSky\RandomWinner\Solver', 'members');
+        $aMembers = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
         $aMembers->setAccessible(true);
         $aStorage = new ReflectionProperty('GetSky\RandomWinner\Solver', 'storage');
         $aStorage->setAccessible(true);
 
         $this->assertSame($generator,$aGenerator->getValue($solver));
-        $this->assertInstanceOf('SplObjectStorage', $aMembers->getValue($solver));
-        $this->assertSame($solver, $aStorage->getValue($solver));
+        $this->assertInstanceOf('SplObjectStorage', $aMembers->getValue($storage));
+        $this->assertSame($storage, $aStorage->getValue($solver));
         $this->assertInstanceOf('GetSky\RandomWinner\MembersStorageInterface', $aStorage->getValue($solver));
 
 
         $solver = new Solver($generator, $membersStorage);
 
-        $aMembers = new ReflectionProperty('GetSky\RandomWinner\Solver', 'members');
+        $aMembers = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
         $aMembers->setAccessible(true);
         $aStorage = new ReflectionProperty('GetSky\RandomWinner\Solver', 'storage');
         $aStorage->setAccessible(true);

@@ -16,10 +16,11 @@ use GetSky\RandomWinner\Solver;
 // Prepare library for generating random numbers and our solver.
 $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
 
-// Create a member objects with a chance to win and attach them to the solver.
-$solver->attach(new Member('Foo', 35));
-$solver->attach(new Member('Bar', 10));
-$solver->attach(new Member(new StdClass(), 55));
+// Create a member objects with a chance to win and attach them to the storage.
+$storage = $solver->getStorage();
+$storage->attach(new Member('Foo', 35));
+$storage->attach(new Member('Bar', 10));
+$storage->attach(new Member(new StdClass(), 55));
 
 // Run solver. You want to run again and again.
 $winner = $solver->run();
@@ -54,8 +55,9 @@ Class MyMember implements MemberInterface {
 
 $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
 
-$solver->attach(new MyMember(35));
-$solver->attach(new MyMember(25));
+$storage = $solver->getSolver();
+$storage->attach(new MyMember(35));
+$storage->attach(new MyMember(25));
 
 $winner = $solver->run();
 ```

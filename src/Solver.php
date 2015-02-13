@@ -28,10 +28,10 @@ class Solver
      * @param Generator $generator
      * @param MembersStorageInterface $storage
      */
-    public function __construct(Generator $generator, MembersStorageInterface $storage)
+    public function __construct(Generator $generator, MembersStorageInterface $storage = null)
     {
         $this->generator = $generator;
-        $this->storage = $storage;
+        $this->storage = $storage != null ? $storage : new SplStorage();
     }
 
     /**
@@ -50,5 +50,14 @@ class Solver
         }
 
         throw new SolverException();
+    }
+
+    /**
+     * Return members storage.
+     * @return MembersStorageInterface
+     */
+    public function getStorage()
+    {
+        return $this->storage;
     }
 }

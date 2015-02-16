@@ -2,7 +2,7 @@
 
 use GetSky\RandomWinner\Solver;
 
-class SolverTest extends PHPUnit_Framework_TestCase
+class OldSolverTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerForPush

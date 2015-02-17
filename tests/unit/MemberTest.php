@@ -9,7 +9,7 @@ class MemberTest extends PHPUnit_Framework_TestCase
      * @param $object
      * @param $chance
      */
-    public function testCreate($object, $chance)
+    public function testConstruct($object, $chance)
     {
         $member = new Member($object, $chance);
 

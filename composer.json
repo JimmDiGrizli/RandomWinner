@@ -18,7 +18,7 @@
         "ircmaxell/random-lib": "1.1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.3.*",
+        "phpunit/phpunit": "4.5.*",
         "squizlabs/php_codesniffer": "1.*",
         "phpdocumentor/phpdocumentor": "2.*"
     },

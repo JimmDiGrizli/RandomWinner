@@ -54,7 +54,6 @@ class MemberTest extends PHPUnit_Framework_TestCase
         $aMember->setAccessible(true);
         $aMember->setValue($member, $value);
         return $member;
-
     }
 
     /**

@@ -48,7 +48,6 @@ class SplStorage implements MembersStorageInterface
         if (!$this->contains($member)) {
             $this->members->attach($member);
             $this->upperLimit += $member->getChance();
-            $this->createRange();
         }
     }
 
@@ -70,7 +69,6 @@ class SplStorage implements MembersStorageInterface
         if ($this->contains($member)) {
             $this->members->detach($member);
             $this->upperLimit -= $member->getChance();
-            $this->createRange();
         }
     }
 
@@ -88,6 +86,7 @@ class SplStorage implements MembersStorageInterface
      */
     public function getAll()
     {
+        $this->createRange();
         return $this->members;
     }
 

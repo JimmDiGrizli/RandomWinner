@@ -174,7 +174,7 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
             ->method('getObject')
             ->will($this->returnValue($object));
         $mock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(2))
             ->method('getChance')
             ->will($this->returnValue((int)$chance));
 

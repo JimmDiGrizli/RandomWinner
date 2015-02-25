@@ -17,11 +17,6 @@ class SplStorage implements MembersStorageInterface
      */
     protected $members;
 
-    /**
-     * @var int
-     */
-    protected $upperLimit = 0;
-
     public function __construct()
     {
         $this->members = new SplObjectStorage();
@@ -47,7 +42,6 @@ class SplStorage implements MembersStorageInterface
     {
         if (!$this->contains($member)) {
             $this->members->attach($member);
-            $this->upperLimit += $member->getChance();
         }
     }
 
@@ -68,7 +62,6 @@ class SplStorage implements MembersStorageInterface
     {
         if ($this->contains($member)) {
             $this->members->detach($member);
-            $this->upperLimit -= $member->getChance();
         }
     }
 
@@ -95,6 +88,11 @@ class SplStorage implements MembersStorageInterface
      */
     public function getUpperLimit()
     {
-        return $this->upperLimit;
+        $max = 0;
+        foreach ($this->members as $member) {
+            $max = $max < $member->getChance() ? $member->getChance() : $max;
+        }
+
+        return $max;
     }
 }

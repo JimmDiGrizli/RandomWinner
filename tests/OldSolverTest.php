@@ -16,17 +16,11 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
         $solver = new Solver($generator, $storage);
         $member = $this->getMember($object, $chance);
 
-        $upperLimit = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'upperLimit');
-        $upperLimit->setAccessible(true);
-
-
         $storage->attach($member);
         $this->assertSame(true, $storage->contains($member));
-        $this->assertSame((int)$chance, $upperLimit->getValue($storage));
 
         $storage->detach($member);
         $this->assertSame(false, $storage->contains($member));
-        $this->assertSame(0, $upperLimit->getValue($storage));
     }
 
     /**
@@ -44,10 +38,6 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
         $aGenerator = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
         $aGenerator->setAccessible(true);
         $aGenerator->setValue($storage, $members);
-
-        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'upperLimit');
-        $aGenerator->setAccessible(true);
-        $aGenerator->setValue($storage, $upperLimit);
 
         $this->assertSame($win, $solver->run());
     }
@@ -174,7 +164,7 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
             ->method('getObject')
             ->will($this->returnValue($object));
         $mock
-            ->expects($this->exactly(2))
+            ->expects($this->any())
             ->method('getChance')
             ->will($this->returnValue((int)$chance));
 

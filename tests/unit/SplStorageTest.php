@@ -11,6 +11,39 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     *  @dataProvider getAttachData
+     * @param $member
+     */
+    public function testAttachMember($member)
+    {
+        $splStorage = new SplStorage();
+
+        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members->setAccessible(true);
+
+        $this->assertSame(false, $members->getValue($splStorage)->contains($member));
+        $splStorage->attach($member);
+        $this->assertSame(true, $members->getValue($splStorage)->contains($member));
+    }
+
+    /**
+     *  @dataProvider getAttachData
+     * @param $member
+     */
+    public function testDetachMember($member)
+    {
+        $splStorage = new SplStorage();
+
+        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members->setAccessible(true);
+        $members->getValue($splStorage)->attach($member);
+
+        $this->assertSame(true, $members->getValue($splStorage)->contains($member));
+        $splStorage->detach($member);
+        $this->assertSame(false, $members->getValue($splStorage)->contains($member));
+    }
+
+    /**
      *  @dataProvider getUpperData
      * @param $storage
      * @param $max
@@ -18,7 +51,6 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
     public function testGetUpperLimit($storage, $max)
     {
         $splStorage = new SplStorage();
-        $this->assertSame(0, $splStorage->getUpperLimit());
 
         $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
         $members->setAccessible(true);
@@ -38,7 +70,7 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     *  @dataProvider getRangeData
+     * @dataProvider getRangeData
      * @param $range
      */
     public function testGetRange($range)
@@ -51,10 +83,21 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
 
     public function testContains()
     {
-        $member = $this->getMember('test', 10);
+        $member = $this->getMember('test', null);
         $splStorage = $this->getSplStorage($member, true, 'contains');
 
         $this->assertSame(true, $splStorage->contains($member));
+
+        $splStorage = $this->getSplStorage($member, false, 'contains');
+        $this->assertSame(false, $splStorage->contains($this->getMember('test2', null)));
+    }
+
+    public function getAttachData() {
+        return [
+            [$this->getMember('test', 10)],
+            [$this->getMember('foo', 25)],
+            [$this->getMember('bar', 65)],
+        ];
     }
 
     public function getRangeData() {
@@ -95,7 +138,7 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
         $splObjectStorage = $this->getMockBuilder('SplObjectStorage')
             ->getMock();
         $splObjectStorage
-            ->expects($this->once())
+            ->expects($this->any())
             ->method($method)
             ->with($member)
             ->will($this->returnValue($value));

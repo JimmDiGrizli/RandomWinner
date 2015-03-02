@@ -12,7 +12,7 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
     public function testPush($object, $chance)
     {
         $generator = $this->getGenerator();
-        $storage = new \GetSky\RandomWinner\SplStorage();
+        $storage = new \GetSky\RandomWinner\DefaultStorage();
         $solver = new Solver($generator, $storage);
         $member = $this->getMember($object, $chance);
 
@@ -32,10 +32,10 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
     public function testRun($members, $upperLimit, $win)
     {
         $generator = $this->getGenerator(true);
-        $storage = new \GetSky\RandomWinner\SplStorage();
+        $storage = new \GetSky\RandomWinner\DefaultStorage();
         $solver = new Solver($generator, $storage);
 
-        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $aGenerator = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $aGenerator->setAccessible(true);
         $aGenerator->setValue($storage, $members);
 
@@ -47,7 +47,7 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
     public function testExceptionRun()
     {
         $generator = $this->getGenerator(true);
-        $storage = new \GetSky\RandomWinner\SplStorage();
+        $storage = new \GetSky\RandomWinner\DefaultStorage();
         $solver = new Solver($generator, $storage);
 
 
@@ -62,12 +62,12 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $storage = new \GetSky\RandomWinner\SplStorage();
+        $storage = new \GetSky\RandomWinner\DefaultStorage();
         $solver = new Solver($generator, $storage);
 
         $aGenerator = new ReflectionProperty('GetSky\RandomWinner\Solver', 'generator');
         $aGenerator->setAccessible(true);
-        $aMembers = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $aMembers = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $aMembers->setAccessible(true);
         $aStorage = new ReflectionProperty('GetSky\RandomWinner\Solver', 'storage');
         $aStorage->setAccessible(true);
@@ -80,7 +80,7 @@ class OldSolverTest extends PHPUnit_Framework_TestCase
 
         $solver = new Solver($generator, $membersStorage);
 
-        $aMembers = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $aMembers = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $aMembers->setAccessible(true);
         $aStorage = new ReflectionProperty('GetSky\RandomWinner\Solver', 'storage');
         $aStorage->setAccessible(true);

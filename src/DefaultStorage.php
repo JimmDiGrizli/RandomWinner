@@ -9,7 +9,7 @@ namespace GetSky\RandomWinner;
 use SplObjectStorage;
 use Traversable;
 
-class SplStorage implements MembersStorageInterface
+class DefaultStorage implements MembersStorageInterface
 {
 
     /**
@@ -71,7 +71,12 @@ class SplStorage implements MembersStorageInterface
      */
     public function getRange(MemberInterface $member)
     {
-        return $this->members->offsetGet($member);
+        $range = $this->members->offsetGet($member);
+        if ($range == null ) {
+            $this->createRange();
+            return $this->members->offsetGet($member);
+        }
+        return $range;
     }
 
     /**

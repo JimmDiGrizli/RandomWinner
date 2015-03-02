@@ -1,12 +1,12 @@
 <?php
 
-use GetSky\RandomWinner\SplStorage;
+use GetSky\RandomWinner\DefaultStorage;
 
 class SplStorageTest extends PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
         $this->assertAttributeInstanceOf('SplObjectStorage', 'members', $splStorage);
     }
 
@@ -16,9 +16,9 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
      */
     public function testAttachMember($member)
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
 
-        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $members->setAccessible(true);
 
         $this->assertSame(false, $members->getValue($splStorage)->contains($member));
@@ -32,9 +32,9 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
      */
     public function testDetachMember($member)
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
 
-        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $members->setAccessible(true);
         $members->getValue($splStorage)->attach($member);
 
@@ -50,9 +50,9 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
      */
     public function testGetUpperLimit($storage, $max)
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
 
-        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $members->setAccessible(true);
         $members->setValue($splStorage, $storage);
 
@@ -61,9 +61,9 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
 
     public function testGetAll()
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
 
-        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $members->setAccessible(true);
 
         $this->assertSame($members->getValue($splStorage), $splStorage->getAll());
@@ -134,7 +134,7 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
 
     protected function getSplStorage($member, $value, $method)
     {
-        $splStorage = new SplStorage();
+        $splStorage = new DefaultStorage();
         $splObjectStorage = $this->getMockBuilder('SplObjectStorage')
             ->getMock();
         $splObjectStorage
@@ -142,7 +142,7 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
             ->method($method)
             ->with($member)
             ->will($this->returnValue($value));
-        $members = new ReflectionProperty('GetSky\RandomWinner\SplStorage', 'members');
+        $members = new ReflectionProperty('GetSky\RandomWinner\DefaultStorage', 'members');
         $members->setAccessible(true);
         $members->setValue($splStorage, $splObjectStorage);
         return $splStorage;

@@ -31,7 +31,7 @@ class Solver
     public function __construct(Generator $generator, MembersStorageInterface $storage = null)
     {
         $this->generator = $generator;
-        $this->storage = $storage != null ? $storage : new SplStorage();
+        $this->storage = $storage != null ? $storage : new DefaultStorage();
     }
 
     /**

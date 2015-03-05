@@ -72,7 +72,7 @@ class DefaultStorage implements MembersStorageInterface
     public function getRange(MemberInterface $member)
     {
         $range = $this->members->offsetGet($member);
-        if ($range == null ) {
+        if ($range == null) {
             $this->createRange();
             return $this->members->offsetGet($member);
         }

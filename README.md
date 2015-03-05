@@ -55,7 +55,7 @@ Class MyMember implements MemberInterface {
 
 $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
 
-$storage = $solver->getSolver();
+$storage = $solver->getStorage();
 $storage->attach(new MyMember(35));
 $storage->attach(new MyMember(25));
 

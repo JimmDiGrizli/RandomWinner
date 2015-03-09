@@ -3,7 +3,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/JimmDiGrizli/random-winner/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/JimmDiGrizli/random-winner/?branch=develop)
 [![Code Coverage](https://scrutinizer-ci.com/g/JimmDiGrizli/random-winner/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/JimmDiGrizli/random-winner/?branch=develop)
 
-This library will decide the winner randomly.
+This library can help to easily determine the winner by a random number generator.
 
 Simple Usage
 ------------
@@ -13,16 +13,16 @@ include '../vendor/autoload.php';
 use GetSky\RandomWinner\Member;
 use GetSky\RandomWinner\Solver;
 
-// Prepare library for generating random numbers and our solver.
+// First, create an object of class Solver with indication a desired generator.
 $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator());
 
-// Create a member objects with a chance to win and attach them to the storage.
+// Then we get a storage and attach members.
 $storage = $solver->getStorage();
 $storage->attach(new Member('Foo', 35));
 $storage->attach(new Member('Bar', 10));
 $storage->attach(new Member(new StdClass(), 55));
 
-// Run solver. You want to run again and again.
+// Now we can determine the winner.
 $winner = $solver->run();
 $winner = $solver->run();
 ```
@@ -65,7 +65,7 @@ $winner = $solver->run();
 MembersStorage Interface
 -----------------------
 
-If you need to implement your storage and logic of creating ranges, you can realize your MamberStorage inheriting MemberStorageInterface:
+If you need to implement your storage and logic of creating ranges, you can realize your MemberStorage inheriting MemberStorageInterface:
 
 ```php
 class MyMembersStorage implements MembersStorageInterface {

@@ -127,8 +127,8 @@ class SplStorageTest extends PHPUnit_Framework_TestCase
         return [
             [$spl1, 45],
             [new SplObjectStorage(), 0],
-            [$spl2, 15],
-            [$spl3, 60],
+            [$spl2, 21],
+            [$spl3, 75],
         ];
     }
 

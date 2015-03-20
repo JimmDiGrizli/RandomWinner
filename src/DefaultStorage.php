@@ -95,7 +95,7 @@ class DefaultStorage implements MembersStorageInterface
     {
         $max = 0;
         foreach ($this->members as $member) {
-            $max = $max < $member->getChance() ? $member->getChance() : $max;
+            $max = $max + $member->getChance();
         }
 
         return $max;

@@ -33,6 +33,18 @@ class SolverTest extends PHPUnit_Framework_TestCase
         $this->assertSame('Testing', $solver->getStorage());
     }
 
+    public function testSetStorage()
+    {
+        $generator = $this->getGenerator();
+        $membersStorage = $this->getMembersStorage();
+        $solver = new Solver($generator, $membersStorage);
+        $solver->setStorage($membersStorage);
+
+        $aStorage = new ReflectionProperty('GetSky\RandomWinner\Solver', 'storage');
+        $aStorage->setAccessible(true);
+        $this->assertSame($membersStorage, $aStorage->getValue($solver));
+    }
+
     /**
      * @param bool $expect
      * @return \RandomLib\Generator

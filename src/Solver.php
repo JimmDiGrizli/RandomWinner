@@ -60,4 +60,14 @@ class Solver
     {
         return $this->storage;
     }
+
+
+    /**
+     * Set new members storage.
+     * @param MembersStorageInterface $membersStorage
+     */
+    public function setStorage(MembersStorageInterface $membersStorage)
+    {
+        $this->storage = $membersStorage;
+    }
 }

@@ -8,8 +8,8 @@ namespace GetSky\RandomWinner;
 
 use RandomLib\Generator;
 
-class SolverFactory {
-
+class SolverFactory
+{
     public static function createSolver(Generator $generator, array $members, MembersStorageInterface $storage = null)
     {
         if ($storage == null) {

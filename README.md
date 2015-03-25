@@ -133,3 +133,19 @@ $solver = new Solver((new RandomLib\Factory)->getMediumStrengthGenerator(), $sto
 $winner = $solver->run();
 $winner = $solver->run();
 ```
+
+MembersStorage Interface
+-----------------------
+
+You can use static factory for create solver with various members storage.
+
+```php
+$generator = (new RandomLib\Factory)->getMediumStrengthGenerator();
+
+$solver1 = SolverFactory::createSolver($generator, [['bar',3], ['foo',5]]);
+$solver2 = SolverFactory::createSolver($generator, [['example',1], ['example2',5], ['example3',2]]);
+// Now we can determine the winner.
+$winner1 = $solver1->run();
+$winner2 = $solver2->run();
+```
+```
